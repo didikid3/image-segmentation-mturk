@@ -1,0 +1,222 @@
+/* Center everything vertically */
+.app-container {
+  display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centers content vertically */
+    align-items: center; /* Centers content horizontally */
+    height: 100vh; /* Full viewport height */
+    width: 100vw; /* Full viewport width */
+    background-color: #2d2d2d; /* Dark background */
+    color: white; /* White text */
+    overflow-y: auto;
+    position: relative;
+}
+
+/* Title at the top */
+.title {
+  font-size: 30px;
+  font-weight: bold;
+
+  position: absolute;
+
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 18px;
+  font-weight: normal;
+  position: absolute;
+  top: 50px; /* Position below the title */
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  margin: 10px;
+  opacity: 0.8; /* Slightly faded to differentiate from title */
+}
+
+
+.canvas-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding-top: 60px; /* Keeps it below the title */
+}
+
+canvas {
+  border: 2px solid white; /* Just for visibility */
+  cursor: crosshair;
+  max-width: 90vw;
+  max-height: 70vh;
+}
+
+.submission-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh; /* Centers in the middle */
+  color: white;
+  text-align: center;
+}
+
+.new-annotation-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: blue;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.new-annotation-button:hover {
+  background-color: darkblue;
+}
+
+
+
+
+
+.button-container {
+  display: flex;
+  justify-content: space-between; /* Distribute groups across the width */
+  align-items: flex-start; /* Align all groups to the top */
+  width: 90%;
+  margin-top: 20px;
+  padding: 0 20px;
+}
+
+.button-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.button-group.left {
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.button-group.right {
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.button-group.center {
+  align-items: center;
+  justify-content: center;
+  min-height: 75px;
+}
+
+.button-group button {
+  margin: 5px 0;
+}
+
+.button-group.left button {
+  width: 200px;
+  text-align: center;
+}
+
+.button-group.center button {
+  width: 200px;
+  text-align: center;
+}
+
+.clear-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.clear-button:hover {
+  background-color: darkred;
+}
+
+.submit-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: green;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+  background-color: darkgreen;
+}
+
+.ai-assist-button {
+  margin-top: 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.ai-assist-button:hover {
+  background-color: #0056b3;
+}
+
+.delete-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: purple; /* You can change this to another shade if needed */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.delete-button:hover {
+  background-color: darkmagenta;
+}
+
+.delete-button:disabled {
+  background-color: gray;
+  cursor: not-allowed;
+}
+
+.merge-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #ff9800; /* Orange */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.merge-button:hover {
+  background-color: #e68900;
+  transform: scale(1.05);
+}
+
+.merge-button:disabled {
+  background-color: gray;
+  cursor: not-allowed;
+  transform: none;
+}
