@@ -327,6 +327,7 @@ const App = () => {
   // BUTTON CONTROLS
   const clearAnnotations = () => {
     setBoundingBoxes([]);
+    setSelectedBoxIndex(null);
     redrawCanvas();
   }
 
@@ -426,57 +427,78 @@ const App = () => {
 
 
   return (
-    <div className="app-container">
-      <h2 className="title">Image Segmentation</h2>
-      <p className="subtitle">Please draw bounding boxes around the animals.</p>
+    <>
+      <div className="layout-container">
+        {/* Fixed Header */}
+        <header className="header">
+          <h2 className="title">Image Segmentation</h2>
+          <p className="subtitle">Please draw bounding boxes around the animals.</p>
+        </header>
 
-      {submissionCode ? (
-        <div className="submission-container">
-          <h3> Submission Complete!</h3>
-          <p>Your submission code: <strong>{submissionCode}</strong></p>
-          <button className="new-annotation-button" onClick={startNewAnnotation}>Start New Annotation</button>
-        </div>
-      ) : (
-        <>
-          <div className="canvas-container">
-            {loading ? (
-              <p>Loading image...</p>
-              ) : (
-              <canvas
-                ref={canvasRef}
-                className="canvas"
-                onMouseDown={handleMouseDown}
-                onMouseUp={handleMouseUp}
-                onMouseMove={handleMouseMove}
-              />
+        {/* Scrollable Content */}
+        <main className="content">
+          <div className="instructions-container">
+            <ul className="instructions">
+              <li>🖌️ Use your mouse to draw bounding boxes around objects in the image.</li>
+              <li>🎯 Click on a box to select it. Selected boxes will be highlighted.</li>
+              <li>❌ Press the X inside a selected box to delete it.</li>
+              <li>🔄 Drag a selected box to reposition it.</li>
+              <li>🤖 Click "Get AI Assistance" to generate AI-predicted bounding boxes.</li>
+              <li>✅ Click the check mark inside an AI-generated box to accept it.</li>
+              <li>📤 Click "Submit Annotations" when you’re finished.</li>
+            </ul>
+          </div>
+
+          <div className="app-container">
+            {submissionCode ? (
+              <div className="submission-container">
+                <h3> Submission Complete!</h3>
+                <p>Your submission code: <strong>{submissionCode}</strong></p>
+                <button className="new-annotation-button" onClick={startNewAnnotation}>Start New Annotation</button>
+              </div>
+            ) : (
+              <>
+                <div className="canvas-container">
+                  {loading ? (
+                    <p>Loading image...</p>
+                  ) : (
+                    <canvas
+                      ref={canvasRef}
+                      className="canvas"
+                      onMouseDown={handleMouseDown}
+                      onMouseUp={handleMouseUp}
+                      onMouseMove={handleMouseMove}
+                    />
+                  )}
+                </div>
+                <div className="button-container">
+                  <div className="button-group left">
+                    <button className="clear-button" onClick={clearAnnotations}>Clear Annotations</button>
+                    <button className="delete-button" onClick={deleteSelectedBox} disabled={selectedBoxIndex === null}>
+                      Delete Selected Box
+                    </button>
+                  </div>
+
+                  <div className="button-group center">
+                    <button className="ai-assist-button" onClick={getAIAssistance} disabled={aiLoading}>
+                      { aiLoading ? "Processing..." : "Get AI Assistance" }
+                    </button>
+                    
+                    <button className="merge-button" onClick={acceptAllAIBoundingBoxes} disabled={!boundingBoxes.some(box => box.aiGenerated)}>
+                      Accept All AI Boxes
+                    </button>
+                  </div>
+
+                  <div className="button-group right">
+                    <button className="submit-button" onClick={submitAnnotations}>Submit Annotations</button>
+                  </div>
+                </div>
+              </>
             )}
           </div>
-          <div className="button-container">
-            <div className="button-group left">
-              <button className="clear-button" onClick={clearAnnotations}>Clear Annotations</button>
-              <button className="delete-button" onClick={deleteSelectedBox} disabled={selectedBoxIndex === null}>
-                Delete Selected Box
-              </button>
-            </div>
-
-            <div className="button-group center">
-              <button className="ai-assist-button" onClick={getAIAssistance} disabled={aiLoading}>
-                { aiLoading ? "Processing..." : "Get AI Assistance" }
-              </button>
-              
-              <button className="merge-button" onClick={acceptAllAIBoundingBoxes} disabled={!boundingBoxes.some(box => box.aiGenerated)}>
-                Accept All AI Boxes
-              </button>
-            </div>
-
-            <div className="button-group right">
-            <button className="submit-button" onClick={submitAnnotations}>Submit Annotations</button>
-            </div>
-          </div>
-        </>
-      )}
-      
-    </div>
+        </main>
+      </div>
+    </>
   );
 };
 
