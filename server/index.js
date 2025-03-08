@@ -41,7 +41,7 @@ app.get('/api', (req, res) => {
     }
 
     const randomImage = imageMetaData[Math.floor(Math.random() * imageMetaData.length)];
-    res.json({ imageUrl: randomImage.imageUrl });
+    res.json({ filename: randomImage.filename });
 });
 
 
@@ -78,34 +78,18 @@ app.post('/submit', (req, res) => {
 
 app.post("/api/segment", (req, res) => {
     console.log("Received request to segment image");
-    const {imageUrl} = req.body;
-    if (!imageUrl) {
+    const { imageName } = req.body;
+    if (!imageName) {
         return res.status(400).json({message: 'Invalid request'});
     }
 
-    const imagePath = path.join(__dirname, 'public', path.basename(imageUrl));
-    const pythonProcess = spawn('python', ['inference.py', imagePath]);
+    const detectionFile = path.join(__dirname, 'detections.json');
+    const detectionData = JSON.parse(fs.readFileSync(detectionFile, 'utf-8'));
 
-    let resultData = "";
-    pythonProcess.stdout.on("data", (data) => {
-        resultData += data.toString();
-    });
-    pythonProcess.stderr.on("data", (data) => {
-        console.error(data.toString());
-    });
-    pythonProcess.on("close", (code) => {
-        if (code !== 0) {
-            return res.status(500).json({message: 'Error processing image'});
-        }
-
-        try{
-            const parsedResult = JSON.parse(resultData);
-            res.json(parsedResult);
-        } catch(error) {
-            console.error(error);
-            res.status(500).json({message: 'Error parsing result data'});
-        }
-    });
+    if (detectionData[imageName]) {
+        console.log("Returning cached segmentation data");
+        return res.json(detectionData[imageName]);
+    }
 });
 
 

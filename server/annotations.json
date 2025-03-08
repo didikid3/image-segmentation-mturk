@@ -1,6 +1,18 @@
 {
-  "submissionCount": 0,
+  "submissionCount": 1,
   "submissions": [
-
+    {
+      "submissionID": "6B86B273",
+      "imageUrl": "http://localhost:8080/images/000c4d66ce89aa69.jpg",
+      "timestamp": "2025-03-08T22:01:19.033Z",
+      "annotations": [
+        {
+          "x": 259,
+          "y": 294,
+          "width": 247,
+          "height": 190
+        }
+      ]
+    }
   ]
 }

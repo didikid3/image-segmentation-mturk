@@ -3,8 +3,12 @@ import axios from "axios";
 
 import './App.css';
 
+const ip = "http://localhost:8080";
+axios.defaults.baseURL = ip;
+
 const App = () => {
   const [imageUrl, setImageUrl] = useState(null);
+  const [imageName, setImageName] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const [submissionCode, setSubmissionCode] = useState(null);
@@ -25,9 +29,15 @@ const App = () => {
 
   // Fetch Image
   useEffect(() => {
-    axios.get("http://localhost:8080/api")
+    axios.get("/api")
       .then((response) => {
-        setImageUrl(response.data.imageUrl);
+        console.log(response.data);
+        const filename = response.data.filename;
+        const newImageUrl = ip + "/images/" + filename;
+
+        setImageName(filename);
+        setImageUrl(newImageUrl);
+
         setLoading(false);
       })
       .catch((error) => {
@@ -36,11 +46,14 @@ const App = () => {
       });
   }, []);
 
-  const loadAndScaleImage = (url) => {
-    if (!imageUrl) return;
+  useEffect(() => {
+    console.log("Updated image url:", imageUrl);
+  }, [imageUrl]);
 
+  const loadAndScaleImage = (url) => {
+    if (!url) return;
     const img = new Image();
-    img.src = imageUrl;
+    img.src = url;
     img.onload = () => {
       setImage(img);
       const canvas = canvasRef.current;
@@ -219,8 +232,6 @@ const App = () => {
     }
 
     if (isDrawing && startPoint){
-      setIsDragging(true);
-
       const width = offsetX - startPoint.x;
       const height = offsetY - startPoint.y;
 
@@ -310,7 +321,7 @@ const App = () => {
   useEffect(() => {
     redrawCanvas();
   }, [boundingBoxes]);
-
+ 
 
 
   // BUTTON CONTROLS
@@ -325,7 +336,7 @@ const App = () => {
       annotations: boundingBoxes
     }
 
-    axios.post("http://localhost:8080/submit", payload)
+    axios.post("/submit", payload)
       .then((response) => {
         console.log("Annotations saved:", response.data);
         setSubmissionCode(response.data.entry.submissionID);
@@ -344,9 +355,11 @@ const App = () => {
     setBoundingBoxes([]);
     setCurrentBox(null);
     
-    axios.get("http://localhost:8080/api")
+    axios.get("/api")
       .then((response) => {
-        setImageUrl(response.data.imageUrl);
+        const filename = response.data.filename;
+        setImageName(filename);
+        setImageUrl(ip  + "/images/" + filename);
       })
       .catch((error) => {
         console.error("Error fetching image:", error);
@@ -356,7 +369,7 @@ const App = () => {
   const getAIAssistance = () => {
     setAILoading(true);
 
-    axios.post("http://localhost:8080/api/segment", {imageUrl})
+    axios.post("/api/segment", { imageName })
       .then((response) => {
         console.log("AI Predicts:", response.data);
 
