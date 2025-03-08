@@ -8,7 +8,9 @@ const crypto = require('crypto');
 
 const app = express();
 const corsOptions = {
-    origin: 'http://localhost:5173',
+    origin: ['http://localhost:5173', 'http://34.230.44.229:5173'],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true
 };
 app.use(cors(corsOptions));
 app.use(express.json());
